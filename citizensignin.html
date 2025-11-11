@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicFix | Sign Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #bfbfbf; /* solid grey background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    /* Header Styling */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 25px 0;
+      font-size: 28px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      letter-spacing: 1px;
+    }
+
+    .container {
+      background-color: white;
+      width: 400px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      margin-top: 100px; /* space below fixed header */
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h3 {
+      color: #333;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+    }
+
+    .gender, .languages {
+      margin-bottom: 15px;
+    }
+
+    .gender label,
+    .languages label {
+      display: inline-block;
+      font-weight: normal;
+      margin-right: 10px;
+    }
+
+    .gender input,
+    .languages input {
+      margin-right: 5px;
+    }
+
+    .not-robot {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .not-robot input {
+      margin-right: 10px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    CivicFix
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h3 style="font-size: 40px;">Sign Up</h3>
+      <img src="citilogin.png" alt="" style="width: 60px;">
+    </div>
+
+    <form id="signupForm" onsubmit="return validateForm()" style="margin-bottom: 10%;">
+      <label for="fname">First Name:</label>
+      <input type="text" id="fname" name="fname" required>
+
+      <label for="lname">Last Name:</label>
+      <input type="text" id="lname" name="lname" required>
+
+      <label for="Email">Email/Contact:</label>
+      <input type="email" id="email" name="email" required style="width: 98%;height: 30px;border-radius: 5px;">
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required style="width: 98%;height: 30px;border-radius: 5px;">
+
+      <label for="dob">Date of Birth:</label>
+      <input type="date" id="dob" name="dob" required>
+
+      <label for="add">Address</label>
+      <input type="text" id="add" name="add" required>
+
+      <div class="gender">
+        <label><b>Gender:</b></label><br>
+        <input type="radio" id="male" name="gender" value="male" required>
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="female">
+        <label for="female">Female</label>
+      </div>
+
+      <div class="languages">
+        <label><b>Languages Known:</b></label><br>
+        <input type="checkbox" id="tel" name="lang" value="Telugu">
+        <label for="tel">Telugu</label>
+        <input type="checkbox" id="hin" name="lang" value="Hindi">
+        <label for="hin">Hindi</label>
+        <input type="checkbox" id="eng" name="lang" value="English">
+        <label for="eng">English</label>
+      </div>
+
+      
+
+      <p id="errorMsg" class="error">You must be at least 18 years old.</p>
+
+      <button type="submit" onclick="window.location.href='citiportal.html'">Sign Up
+
+      </button>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      const dob = document.getElementById('dob').value;
+      const errorMsg = document.getElementById('errorMsg');
+
+      const dobDate = new Date(dob);
+      const today = new Date();
+      let age = today.getFullYear() - dobDate.getFullYear();
+      const monthDiff = today.getMonth() - dobDate.getMonth();
+
+      if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < dobDate.getDate())) {
+        age--;
+      }
+
+      if (age < 18) {
+        errorMsg.style.display = 'block';
+        return false;
+      } else {
+        errorMsg.style.display = 'none';
+        alert("Sign Up Successful!");
+        return true;
+      }
+    }
+  </script>
+
+</body>
+</html>

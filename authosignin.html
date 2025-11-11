@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CivicFix | Authority Sign Up</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      background-color: #bfbfbf; /* grey background */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .top-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #333;
+      color: white;
+      text-align: center;
+      padding: 15px 0;
+      font-size: 28px;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+      letter-spacing: 1px;
+      height: 10%;
+    }
+
+    /* Form Container */
+    .container {
+      background-color: white;
+      width: 400px;
+      padding: 30px;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      margin-top: 100px; /* space for fixed header */
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .header h3 {
+      color: #333;
+      font-size: 22px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    select,
+    input[type="file"] {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 15px;
+      border: 1px solid #aaa;
+      border-radius: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #555;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      text-align: center;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-bar">
+    CivicFix
+  </div>
+
+  <div class="container">
+    <div class="header">
+      <h3>Authority Sign Up</h3>
+      <img src="alf.png" alt="" style="width: 70px;margin-top: 20px;" >
+    </div>
+
+    <form id="authorityForm" onsubmit="return validateForm()">
+      <label for="name">Full Name:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">Email / Contact:</label>
+      <input type="email" id="email" name="email" placeholder="example@mail.com" required>
+
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" minlength="6" required>
+
+      <label for="position">Position:</label>
+      <select id="position" name="position" required>
+        <option value="">Select Position</option>
+        <option value="Ward Office">Ward Office</option>
+        <option value="GHMC">GHMC</option>
+        <option value="Municipal Corporation">Municipal Corporation</option>
+        <option value="District Administration">District Administration</option>
+        <option value="CDMA">CDMA</option>
+        <option value="MA&UD">MA&UD</option>
+      </select>
+
+      <label for="idUpload">Upload ID (PNG or PDF):</label>
+      <input type="file" id="idUpload" name="idUpload" accept=".png,.pdf" required>
+
+      <p id="errorMsg" class="error">Please upload a valid PNG or PDF file.</p>
+
+      <button type="submit"
+      onclick="window.location.href='autho-thankyou.html'">Sign Up</button>
+    </form>
+  </div>
+
+  <script>
+    function validateForm() {
+      const fileInput = document.getElementById('idUpload');
+      const filePath = fileInput.value;
+      const errorMsg = document.getElementById('errorMsg');
+
+      // Allowed file extensions
+      const allowedExtensions = /(\.png|\.pdf)$/i;
+
+      if (!allowedExtensions.exec(filePath)) {
+        errorMsg.style.display = 'block';
+        return false;
+      } else {
+        errorMsg.style.display = 'none';
+        alert("Authority Sign-Up Successful!");
+        return true;
+      }
+    }
+  </script>
+
+</body>
+</html>

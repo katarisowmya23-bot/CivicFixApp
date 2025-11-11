@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>CivicFix | Authority Dashboard</title>
+  <style>
+    body { font-family:Arial, sans-serif; background:#f7f8fc; margin:0; display:flex; flex-direction:column; min-height:100vh; }
+    header { background: linear-gradient(90deg,#514f52,#1e1d1e); color:#fff; text-align:center; padding:40px 20px; }
+    header h1{ margin:0; }
+    .notice { text-align:center; padding:10px; background:#fff3cd; color:#856404; border-bottom:1px solid #ffeeba; }
+    .content { max-width:900px; margin:20px auto; padding:20px; width:calc(100% - 40px); }
+    .complaint { background:white; border-radius:10px; box-shadow:0 6px 20px rgba(0,0,0,0.08); margin-bottom:20px; padding:20px; display:flex; gap:20px; align-items:flex-start; }
+    .complaint img { width:150px; height:150px; object-fit:cover; border-radius:10px; background:#eee; }
+    .complaint-details { flex:1; }
+    .complaint-details h3{ margin:0; color:#333; }
+    .complaint-details p{ margin:6px 0; }
+    .status { font-weight:bold; margin-top:8px; }
+    .actions { margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; }
+    button { padding:10px 16px; border:none; background:linear-gradient(90deg,#454445,#736f6f); color:#fff; border-radius:8px; cursor:pointer; }
+    button:hover { background:linear-gradient(90deg,#4e4d4d,#333233); }
+    footer{ text-align:center; padding:16px; background:#1e1d1e; color:#fff; margin-top:auto; }
+    .empty { text-align:center; padding:30px; color:#666; background:#fff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.05); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Authority Dashboard</h1>
+    <p>View all registered complaints (newest first). Complaints older than 5 days are removed automatically.</p>
+  </header>
+
+  <div class="notice" id="notice" style="display:none;">⚠️ Complaints older than 5 days are automatically removed.</div>
+
+  <div class="content" id="complaintContainer"></div>
+
+  <footer>&copy; 2025 CivicFix. All Rights Reserved.</footer>
+
+  <script>
+    const container = document.getElementById('complaintContainer');
+    const FIVE_DAYS = 5 * 24 * 60 * 60 * 1000; // 5 days in ms
+    const NOTICE = document.getElementById('notice');
+
+    // Load, clean, sort complaints
+    function loadComplaints() {
+      let complaints = JSON.parse(localStorage.getItem('complaints') || '[]');
+      const now = Date.now();
+
+      // Filter out older complaints (strictly older than 5 days)
+      const beforeCount = complaints.length;
+      complaints = complaints.filter(c => {
+        // If createdAt missing, keep (backwards compatibility). If present, keep if within 5 days.
+        if (!c.createdAt) return true;
+        return (now - c.createdAt) <= FIVE_DAYS;
+      });
+
+      // show notice if some were removed
+      if (complaints.length < beforeCount) {
+        NOTICE.style.display = 'block';
+      } else {
+        NOTICE.style.display = 'none';
+      }
+
+      // sort newest first (handle missing createdAt by treating as 0)
+      complaints.sort((a,b) => (b.createdAt || 0) - (a.createdAt || 0));
+
+      // persist cleaned list (so next load is consistent)
+      localStorage.setItem('complaints', JSON.stringify(complaints));
+      return complaints;
+    }
+
+    // initial complaints
+    let complaints = loadComplaints();
+
+    function renderComplaints() {
+      container.innerHTML = '';
+      if (!complaints || complaints.length === 0) {
+        container.innerHTML = '<div class="empty">No complaints registered yet.</div>';
+        return;
+      }
+
+      complaints.forEach((c, idx) => {
+        // convert createdAt to readable time if present
+        const createdStr = c.createdAt ? new Date(c.createdAt).toLocaleString() : 'Unknown';
+
+        const div = document.createElement('div');
+        div.className = 'complaint';
+        div.innerHTML = `
+          <img src="${c.photo || 'data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22150%22 height=%22150%22><rect width=%22100%25%22 height=%22100%25%22 fill=%22%23eeeeee%22/></svg>'}" alt="Complaint Image">
+          <div class="complaint-details">
+            <h3>${escapeHtml(c.title)}</h3>
+            <p><strong>Category:</strong> ${escapeHtml(c.category)}</p>
+            <p><strong>Description:</strong> ${escapeHtml(c.description)}</p>
+            <p><strong>Location:</strong> ${escapeHtml(c.location)}</p>
+            <p><strong>Pincode:</strong> ${escapeHtml(String(c.pincode))}</p>
+            <p><strong>Submitted:</strong> ${createdStr}</p>
+            <p class="status"><strong>Status:</strong> ${escapeHtml(c.status)}</p>
+            <div class="actions">
+              <button onclick="markResolved(${idx})">Mark Resolved</button>
+              <button onclick="removeComplaint(${idx})" style="background:linear-gradient(90deg,#a94442,#c66d6d)">Remove</button>
+            </div>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // simple escape to avoid accidental HTML injection in strings
+    function escapeHtml(text) {
+      return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+    }
+
+    function markResolved(index) {
+      if (!complaints[index]) return;
+      complaints[index].status = 'Resolved';
+      syncAndRender();
+    }
+
+    function removeComplaint(index) {
+      if (!complaints[index]) return;
+      // remove the item
+      complaints.splice(index, 1);
+      syncAndRender();
+    }
+
+    function syncAndRender() {
+      // persist and re-render
+      localStorage.setItem('complaints', JSON.stringify(complaints));
+      renderComplaints();
+    }
+
+    // Listen for storage events so dashboard updates when a complaint is submitted from another tab/window
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'complaints') {
+        // reload from storage, clean & sort again
+        complaints = loadComplaints();
+        renderComplaints();
+      }
+      if (e.key === 'latestComplaint') {
+        // new complaint added - reload too (covers some browsers/flows)
+        complaints = loadComplaints();
+        renderComplaints();
+      }
+    });
+
+    // If the user submits complaint in the same tab and it redirects back here, you may want to refresh on focus
+    window.addEventListener('focus', () => {
+      complaints = loadComplaints();
+      renderComplaints();
+    });
+
+    // initial render
+    renderComplaints();
+  </script>
+</body>
+</html>

@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CivicFix | Citizen Portal</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      height: 100vh;
+      background: #dcdcdc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #333;
+    }
+   .title-row {
+  display: flex;
+  align-items: center;        /* vertically center items */
+  justify-content: center;    /* center the whole row horizontally */
+  gap: 10px;                  /* space between text and image */
+  margin-bottom: 25px;
+}
+
+.title-row h2 {
+  font-size: 24px;
+  color: #2f2f2f;
+  margin: 0;
+}
+
+.title-row img {
+  width: 50px;                /* adjust size if needed */
+  height: auto;
+}
+
+
+
+    .container {
+      display: flex;
+      width: 750px;
+      height: 420px;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(0,0,0,0.3);
+      background-color: #f8f8f8;
+    }
+
+    /* Left side: Login form */
+    .left, .right {
+      flex: 1;
+      padding: 40px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .left {
+      background: #f4f4f4;
+      color: #222;
+    }
+
+    .left h2 {
+      font-size: 24px;
+      margin-bottom: 20px;
+      color: #2f2f2f;
+    }
+
+    label {
+      margin-top: 15px;
+      font-weight: 600;
+      font-size: 14px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 6px;
+      border: 1px solid #bbb;
+      border-radius: 6px;
+      font-size: 14px;
+    }
+
+    button {
+      margin-top: 25px;
+      padding: 12px;
+      width: 100%;
+      background: linear-gradient(90deg, #3d3d3d, #737373);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #505050, #2f2f2f);
+    }
+
+    /* Right side: Info */
+    .right {
+      background: linear-gradient(90deg, #514f52, #1e1d1e);
+      color: #fff;
+      text-align: center;
+      position: relative;
+    }
+
+    .right::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.4);
+    }
+
+    .right-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 10px;
+    }
+
+    .right-content h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .right-content p {
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .signin {
+      margin-top: 20px;
+      font-size: 14px;
+    }
+
+    .signin a {
+      color: #fff;
+      text-decoration: underline;
+    }
+
+    /* CivicFix header above the container */
+    .header {
+      position: absolute;
+       background: linear-gradient(90deg, #4e4d4d, #333233);
+       padding: 20px;margin-top: -2%;
+      top: 30px;
+      text-align: center;
+      width: 100%;
+      color: #fff;
+      font-size: 36px;
+      font-weight: bold;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+      letter-spacing: 1px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">CivicFix</div>
+
+  <div class="container">
+    <!-- Left Side: Login Form -->
+   <div class="left">
+  <div class="title-row">
+    <h2>Citizen Log-In</h2>
+    <img src="citilogin.png" alt="Login Icon">
+  </div>
+
+  <form id="loginForm">
+    <label for="username">Username / Email</label>
+    <input type="text" id="username" name="username" required />
+
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required />
+
+    <button type="submit" onclick="window.location.href='citizen-dashboard.html'">Log In</button>
+  </form>
+</div>
+
+
+
+    <!-- Right Side: Welcome Message -->
+    <div class="right">
+      <div class="right-content">
+        <h2>New here?</h2>
+        <p>Sign up and become an active part of improving your city!</p>
+        <div class="signin">
+          Don’t have an account? <a href="citizensignin.html">Sign up here</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

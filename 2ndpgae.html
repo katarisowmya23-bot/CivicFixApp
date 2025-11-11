@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Issue Reporting</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background:lightgray;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .header-text {
+           
+           background-color:#4D4E50;
+            padding: 15px 25px;
+            border-radius: 10px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            backdrop-filter: blur(6px);
+            width: 60%;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .container {
+            display: flex;
+            gap: 40px;
+            margin-top: 3%;
+            color: black;
+            
+        }
+
+        .box {
+            width: 250px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.85);
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            transition: 0.4s;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            
+        }
+
+        .box:hover {
+            transform: scale(1.07);
+            background: rgba(255,255,255, 0.95);
+        }
+    </style>
+</head>
+<body>
+    <h1 style="background: linear-gradient(90deg, #514f52, #1e1d1e);color: white;
+    width: 100%;justify-content: center;padding: 60px ;margin-top: -20px;">
+        CivicFix
+    </h1>
+
+    <div class="header-text">
+       A digital bridge designed to streamline communication between citizens and administrative bodies.
+    </div>
+
+    <div class="container">
+        <div class="box">Citizen Section<br><br>
+            <img src="citilogin.png" alt=""><br><br>
+            <button style="background-color: black;color: white;width: 100PX;height: 50px;border-radius: 20px;border-color: darkslategray;font-weight: bold;"
+            onclick="window.location.href='citizenlogim.html'"> Click here to log in
+            
+                </button>
+               
+            </div>
+        <div class="box">Authority Section<br><br>
+            <img src="alf.png" alt="" width="230px"><br><br>
+  <button style="background-color:black;color: white;width: 100PX;height: 50px;border-radius: 20px;border-color: darkslategray;font-weight: bold;"
+  onclick="window.location.href='authologin.html'"> Click here to log in
+            
+                </button> 
+                </div>
+        </div>
+
+</body>
+</html>
